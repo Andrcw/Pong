@@ -11,8 +11,12 @@ class Ball():
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
+        # speed
+        self.dx = 10
+        self.dy = 10
+
     def update(self):
-        """Update the ship's position based on the movement flag."""
+        """Idk"""
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)

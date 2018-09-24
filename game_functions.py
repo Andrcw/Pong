@@ -43,3 +43,24 @@ def check_events(right, left):
                 right.move_right_up = False
             elif event.key == pygame.K_DOWN:
                 right.move_right_down = False
+
+def check_ball(ball):
+    ball.rect.centerx += ball.dx
+    ball.rect.centery += ball.dy
+
+    print(ball.rect.centery)
+
+    # Border checking
+    if ball.rect.top <= ball.screen_rect.top:
+        ball.dy *= -1
+        # print("HIT TOP!")
+    if ball.rect.right >= ball.screen_rect.right:
+        ball.dx *= -1
+        # print("HIT RIGHT SIDE!")
+    if ball.rect.bottom >= ball.screen_rect.bottom:
+        ball.dy *= -1
+        # print("HIT BOTTOM!")
+    if ball.rect.left <= ball.screen_rect.left:
+        ball.dx *= -1
+        # print("HIT LEFT!")
+

@@ -38,5 +38,6 @@ def run_game():
         left.update()
         ball.update()
         gf.update_screen(screen, line, right, left, ball)
+        gf.check_ball(ball)
 
 run_game()
