@@ -3,13 +3,14 @@ import sys
 import pygame
 
 
-def update_screen(screen, line, right, left):
+def update_screen(screen, line, right, left, ball):
     """Update images on the screen and flip to new screen."""
     # Redraw the screen during each pass of the loop.
     screen.fill((0, 0, 0))
     line.blitme()
     left.blitme()
     right.blitme()
+    ball.blitme()
 
     # Make most recently drawn screen visible
     pygame.display.flip()

@@ -4,6 +4,7 @@ import pygame
 import game_functions as gf
 from line import Line
 from paddle import Paddle
+from ball import Ball
 
 
 def run_game():
@@ -25,11 +26,17 @@ def run_game():
     left.rect.centery = left.screen_rect.centery
     left.rect.left = left.screen_rect.left + 20
 
+    # Draw ball
+    ball = Ball(screen)
+    ball.rect.centerx = ball.screen_rect.centerx
+    ball.rect.centery = ball.screen_rect.centery
+
     # Start the main loop for the game
     while True:
         gf.check_events(right, left)
         right.update()
         left.update()
-        gf.update_screen(screen, line, right, left)
+        ball.update()
+        gf.update_screen(screen, line, right, left, ball)
 
 run_game()
