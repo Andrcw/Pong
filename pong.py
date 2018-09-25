@@ -19,12 +19,12 @@ def run_game():
     # Draw right paddle
     right = Paddle(screen)
     right.rect.centery = right.screen_rect.centery
-    right.rect.right = right.screen_rect.right - 20
+    right.rect.right = right.screen_rect.right - 40
 
     # Draw left paddle
     left = Paddle(screen)
     left.rect.centery = left.screen_rect.centery
-    left.rect.left = left.screen_rect.left + 20
+    left.rect.left = left.screen_rect.left + 40
 
     # Draw ball
     ball = Ball(screen)
@@ -39,5 +39,6 @@ def run_game():
         ball.update()
         gf.update_screen(screen, line, right, left, ball)
         gf.check_ball(ball)
+        gf.check_collisions(ball, right, left)
 
 run_game()

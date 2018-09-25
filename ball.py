@@ -12,8 +12,12 @@ class Ball():
         self.screen_rect = screen.get_rect()
 
         # speed
-        self.dx = 10
-        self.dy = 10
+        self.dx = 8
+        self.dy = 8
+
+        # score
+        self.left_score = 0
+        self.right_score = 0
 
     def update(self):
         """Idk"""
