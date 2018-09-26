@@ -20,15 +20,15 @@ class Paddle():
         self.move_left_down = False
 
     def update(self):
-        """Update the ship's position based on the movement flag."""
+        """Update the paddles's position based on the movement flag."""
         if self.move_right_up and self.rect.top > self.screen_rect.top:
-            self.rect.centery -= 10
+            self.rect.centery -= 12
         elif self.move_right_down and self.rect.bottom < self.screen_rect.bottom:
-            self.rect.centery += 10
+            self.rect.centery += 12
         elif self.move_left_up and self.rect.top > self.screen_rect.top:
-            self.rect.centery -= 10
+            self.rect.centery -= 12
         elif self.move_left_down and self.rect.bottom < self.screen_rect.bottom:
-            self.rect.centery += 10
+            self.rect.centery += 12
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
