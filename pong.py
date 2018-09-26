@@ -33,12 +33,14 @@ def run_game():
 
     # Start the main loop for the game
     while True:
-        gf.check_events(right, left)
+        gf.check_events(right, left, ball)
+        gf.update_screen(screen, line, right, left, ball)
         right.update()
         left.update()
-        ball.update()
-        gf.update_screen(screen, line, right, left, ball)
-        gf.check_ball(ball)
-        gf.check_collisions(ball, right, left)
+
+        if ball.game_active:
+            ball.update()
+            gf.check_ball(ball)
+            gf.check_collisions(ball, right, left)
 
 run_game()

@@ -12,12 +12,16 @@ class Ball():
         self.screen_rect = screen.get_rect()
 
         # speed
-        self.dx = 8
-        self.dy = 8
+        self.speed = 8
+        self.dx = self.speed
+        self.dy = self.speed
 
         # score
         self.left_score = 0
         self.right_score = 0
+
+        # active state of game
+        self.game_active = True
 
     def update(self):
         """Idk"""
