@@ -156,7 +156,7 @@ def score(screen, ball):
     screen.blit(left, [300, 10])
     screen.blit(right, [450, 10])
 
-    if ball.left_score == 5:
+    if ball.left_score == 10:
         # Sounds
         pygame.mixer.music.load('sounds/win.wav')
         pygame.mixer.music.play(0)
@@ -166,7 +166,7 @@ def score(screen, ball):
         screen.blit(play, [140, 320])
         screen.blit(space, [150, 350])
 
-    if ball.right_score == 5:
+    if ball.right_score == 10:
         # Sounds
         pygame.mixer.music.load('sounds/win.wav')
         pygame.mixer.music.play(0)
