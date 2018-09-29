@@ -12,7 +12,7 @@ class Ball():
         self.screen_rect = screen.get_rect()
 
         # speed
-        self.speed = 8
+        self.speed = 5
         self.dx = self.speed
         self.dy = self.speed
 
