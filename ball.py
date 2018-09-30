@@ -12,7 +12,7 @@ class Ball():
         self.screen_rect = screen.get_rect()
 
         # speed
-        self.speed = 5
+        self.speed = 7
         self.dx = self.speed
         self.dy = self.speed
 
@@ -22,6 +22,10 @@ class Ball():
 
         # active state of game
         self.game_active = True
+
+        # active state of home screen
+        self.start_active = True
+
 
     def update(self):
         """Idk"""

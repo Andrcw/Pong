@@ -71,7 +71,7 @@ class CPUVerticalPaddle():
         self.screen_rect = screen.get_rect()
 
         # Speed for paddle
-        self.speed = 10
+        self.speed = 6
 
     def update(self, ball):
         if self.rect.centery < ball.rect.centery and self.rect.bottom < self.screen_rect.bottom:
@@ -93,7 +93,7 @@ class CPUHorizontalPaddle():
         self.screen_rect = screen.get_rect()
 
         # Setting speed for the paddle movement
-        self.speed = 2
+        self.speed = 6
 
     def update(self, ball):
         if self.rect.centerx < ball.rect.centerx and self.rect.right < self.screen_rect.right / 2:

@@ -5,6 +5,7 @@ import game_functions as gf
 from line import Line
 from paddle import VerticalPaddle, HorizontalPaddle, CPUVerticalPaddle, CPUHorizontalPaddle
 from ball import Ball
+from start import Start
 
 
 def run_game():
@@ -51,12 +52,16 @@ def run_game():
     ball.rect.centerx = ball.screen_rect.centerx
     ball.rect.centery = ball.screen_rect.centery
 
-    # ball.game_active = False
-    gf.update_start(screen)
+    ball.game_active = False
+    start = Start(screen)
 
     # Start the main loop for the game
     while True:
         gf.check_events(right, right_top, left_top, left, ball)
+
+        if ball.start_active:
+            start.start_blit(screen)
+            start.start_update(left, left_top)
 
         if ball.game_active:
             gf.update_screen(screen, line, right, right_top, right_bot, left, left_top, left_bot, ball)

@@ -4,20 +4,67 @@ import pygame.sysfont
 import pygame
 
 
-def update_start(screen):
-    screen.fill((0, 0, 0))
-    title = pygame.font.SysFont("monospace", 250)
-    medium = pygame.font.SysFont("monospace", 50)
-    color = (255, 255, 255)
-    pong = title.render("PONG", True, color)
-    l_control = medium.render("Left Paddle: A and Z", True, color)
-    r_control = medium.render("Right Paddle: Up and Down", True, color)
-    start = medium.render("Press Space to start", True, color)
-    screen.blit(pong, [135, 50])
-    screen.blit(l_control, [170, 300])
-    screen.blit(r_control, [170, 350])
-    screen.blit(start, [170, 500])
-    pygame.display.flip()
+def start(screen, ball):
+
+    if ball.start_click:
+        # Fill screen and set text settings
+        screen.fill((0, 0, 0))
+        title = pygame.font.SysFont("monospace", 150)
+        sub = pygame.font.SysFont("monospace", 80)
+        medium = pygame.font.SysFont("monospace", 40)
+        white = (255, 255, 255)
+        green = (50, 255, 50)
+        red = (255, 0, 0)
+
+        # Set text
+        # For Pong
+        pong = title.render("PONG", True, white)
+        pong_btn = pong.get_rect()
+        pong_btn.centerx = screen.get_rect().centerx
+        pong_btn.centery = screen.get_rect().centery - 200
+
+        # For Subtitle
+        sub = sub.render("AI - NO WALLS", True, green)
+        sub_btn = sub.get_rect()
+        sub_btn.centerx = screen.get_rect().centerx
+        sub_btn.centery = screen.get_rect().centery - 120
+
+        # For difficulty level
+        dl = medium.render("Difficulty Level:", True, white)
+        dl_btn = dl.get_rect()
+        dl_btn.centerx = screen.get_rect().centerx - 200
+        dl_btn.centery = screen.get_rect().centery
+
+        # Difficulty easy
+        easy = medium.render("Easy", True, white)
+        easy_btn = easy.get_rect()
+        easy_btn.centerx = screen.get_rect().centerx - 10
+        easy_btn.centery = screen.get_rect().centery
+
+        # Difficulty medium
+        med = medium.render("Medium", True, white)
+        med_btn = med.get_rect()
+        med_btn.centerx = screen.get_rect().centerx + 120
+        med_btn.centery = screen.get_rect().centery
+
+        # Difficulty hard
+        hard = medium.render("Hard", True, white)
+        hard_btn = hard.get_rect()
+        hard_btn.centerx = screen.get_rect().centerx + 250
+        hard_btn.centery = screen.get_rect().centery
+
+        # Blit text
+        screen.blit(pong, pong_btn)
+        screen.blit(sub, sub_btn)
+        screen.blit(dl, dl_btn)
+        screen.blit(easy, easy_btn)
+        screen.blit(med, med_btn)
+        screen.blit(hard, hard_btn)
+        pygame.display.flip()
+
+        # Run only once
+        ball.start_click = False
+        print("hello")
 
 
 def update_screen(screen, line, right, right_top, right_bot, left, left_top, left_bot, ball):
@@ -60,6 +107,7 @@ def check_events(right, right_top, left, left_top, ball):
                 right_top.move_player_right = True
             elif event.key == pygame.K_SPACE:
                 if ball.game_active == False:
+                    ball.start_active = True
                     ball.game_active = True
                     ball.left_score = 0
                     ball.right_score = 0
@@ -93,6 +141,7 @@ def check_ball(ball):
             # Reset the ball speed and give a score
             ball.dx = ball.speed
             ball.dy = ball.speed
+
             ball.dx *= -1
             ball.left_score += 1
 
@@ -107,6 +156,7 @@ def check_ball(ball):
             # Reset the ball speed and give a score
             ball.dx = ball.speed
             ball.dy = ball.speed
+
             ball.dy *= -1
             ball.right_score += 1
 
@@ -123,6 +173,7 @@ def check_ball(ball):
             # Reset the ball speed and give a score
             ball.dx = ball.speed
             ball.dy = ball.speed
+
             ball.dy *= -1
             ball.right_score += 1
 
@@ -138,6 +189,7 @@ def check_ball(ball):
             # Reset the ball speed and give a score
             ball.dx = ball.speed
             ball.dy = ball.speed
+
             ball.dx *= -1
             ball.left_score += 1
 
@@ -149,9 +201,11 @@ def check_ball(ball):
 
         ball.rect.centerx = ball.screen_rect.centerx
         ball.rect.centery = ball.screen_rect.centery
+
         # Reset the ball speed
         ball.dx = ball.speed
         ball.dy = ball.speed
+
         ball.dx *= -1
         ball.left_score += 1
         print("Hit right side")
@@ -164,6 +218,11 @@ def check_ball(ball):
 
         ball.rect.centerx = ball.screen_rect.centerx
         ball.rect.centery = ball.screen_rect.centery
+
+        # Reset the ball speed and give a score
+        ball.dx = ball.speed
+        ball.dy = ball.speed
+
         ball.dx *= -1
         ball.right_score += 1
         print("Hit LEFT")
@@ -177,43 +236,71 @@ def check_collisions(ball, right, right_top, right_bot, left, left_top, left_bot
         pygame.mixer.music.load('sounds/hitpaddle.wav')
         pygame.mixer.music.play(0)
         ball.rect.centerx -= 15
-        # Make the ball speed up
-        # ball.dx += .5
-        # ball.dy += .5
         ball.dx *= -1
+
+        # change ball speed
+        ball.dx *= 1.01
+        ball.dy *= 1.01
 
     # If ball collides with top right paddle
     if ball.rect.colliderect(right_top.rect):
         pygame.mixer.music.load('sounds/hitpaddle.wav')
         pygame.mixer.music.play(0)
+        # Make the ball speed up
+        ball.rect.centery += 10
         ball.dy *= -1
+
+        # change ball speed
+        ball.dx *= 1.01
+        ball.dy *= 1.01
 
     # ball collide with bottom right paddle
     if ball.rect.colliderect(right_bot.rect):
         pygame.mixer.music.load('sounds/hitpaddle.wav')
         pygame.mixer.music.play(0)
+        # Make the ball speed up
+        ball.rect.centery -= 10
         ball.dy *= -1
+
+        # change ball speed
+        ball.dx *= 1.01
+        ball.dy *= 1.01
 
     # If ball collides with left paddle
     if ball.rect.colliderect(left.rect):
         # Sounds
         pygame.mixer.music.load('sounds/hitpaddle.wav')
         pygame.mixer.music.play(0)
-
-        ball.rect.centerx += 15
+        # Make the ball speed up
+        ball.rect.centerx += 10
         ball.dx *= -1
+
+        # change ball speed
+        ball.dx *= 1.01
+        ball.dy *= 1.01
 
     # ball collide with top paddle left
     if ball.rect.colliderect(left_top.rect):
         pygame.mixer.music.load('sounds/hitpaddle.wav')
         pygame.mixer.music.play(0)
+        # Make the ball speed up
+        ball.rect.centery += 10
         ball.dy *= -1
+
+        # change ball speed
+        ball.dx *= 1.01
+        ball.dy *= 1.01
 
     # ball collide with left bottom paddle
     if ball.rect.colliderect(left_bot.rect):
         pygame.mixer.music.load('sounds/hitpaddle.wav')
         pygame.mixer.music.play(0)
+        ball.rect.centery -= 10
         ball.dy *= -1
+
+        # change ball speed
+        ball.dx *= 1.01
+        ball.dy *= 1.01
 
 def score(screen, ball):
     font = pygame.font.SysFont("monospace", 100)
