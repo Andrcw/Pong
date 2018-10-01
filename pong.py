@@ -1,4 +1,6 @@
-import sys
+# Andrew Nguyen
+# andrew96nguyen@csu.fullerton.edu
+# Pong Game
 
 import pygame
 import game_functions as gf
@@ -13,6 +15,9 @@ def run_game():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption("Pong")
+
+    # Start screen
+    start = Start(screen)
 
     # Draw line
     line = Line(screen)
@@ -52,25 +57,25 @@ def run_game():
     ball.rect.centerx = ball.screen_rect.centerx
     ball.rect.centery = ball.screen_rect.centery
 
+    # Make game active to false
     ball.game_active = False
-    start = Start(screen)
 
     # Start the main loop for the game
     while True:
-        gf.check_events(right, right_top, left_top, left, ball)
+        gf.check_events(right, right_top, ball, screen)
 
         if ball.start_active:
             start.start_blit(screen)
-            start.start_update(left, left_top)
+            start.start_update(ball)
 
         if ball.game_active:
-            gf.update_screen(screen, line, right, right_top, right_bot, left, left_top, left_bot, ball)
+            gf.update_screen(screen, line, right, right_top, right_bot, left, left_top, left_bot, ball, start)
             right.update()
             right_top.update()
-            left.update(ball)
-            left_top.update(ball)
-            ball.update()
+            left.update(ball, start)
+            left_top.update(ball, start)
             gf.check_ball(ball)
             gf.check_collisions(ball, right, right_top, right_bot, left, left_top, left_bot)
+
 
 run_game()

@@ -1,8 +1,7 @@
 import pygame
 
 
-class Ball():
-
+class Ball:
     def __init__(self, screen):
         self.screen = screen
 
@@ -25,10 +24,6 @@ class Ball():
 
         # active state of home screen
         self.start_active = True
-
-
-    def update(self):
-        """Idk"""
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)

@@ -2,72 +2,11 @@ import sys
 
 import pygame.sysfont
 import pygame
+import random
+from random import randint
 
 
-def start(screen, ball):
-
-    if ball.start_click:
-        # Fill screen and set text settings
-        screen.fill((0, 0, 0))
-        title = pygame.font.SysFont("monospace", 150)
-        sub = pygame.font.SysFont("monospace", 80)
-        medium = pygame.font.SysFont("monospace", 40)
-        white = (255, 255, 255)
-        green = (50, 255, 50)
-        red = (255, 0, 0)
-
-        # Set text
-        # For Pong
-        pong = title.render("PONG", True, white)
-        pong_btn = pong.get_rect()
-        pong_btn.centerx = screen.get_rect().centerx
-        pong_btn.centery = screen.get_rect().centery - 200
-
-        # For Subtitle
-        sub = sub.render("AI - NO WALLS", True, green)
-        sub_btn = sub.get_rect()
-        sub_btn.centerx = screen.get_rect().centerx
-        sub_btn.centery = screen.get_rect().centery - 120
-
-        # For difficulty level
-        dl = medium.render("Difficulty Level:", True, white)
-        dl_btn = dl.get_rect()
-        dl_btn.centerx = screen.get_rect().centerx - 200
-        dl_btn.centery = screen.get_rect().centery
-
-        # Difficulty easy
-        easy = medium.render("Easy", True, white)
-        easy_btn = easy.get_rect()
-        easy_btn.centerx = screen.get_rect().centerx - 10
-        easy_btn.centery = screen.get_rect().centery
-
-        # Difficulty medium
-        med = medium.render("Medium", True, white)
-        med_btn = med.get_rect()
-        med_btn.centerx = screen.get_rect().centerx + 120
-        med_btn.centery = screen.get_rect().centery
-
-        # Difficulty hard
-        hard = medium.render("Hard", True, white)
-        hard_btn = hard.get_rect()
-        hard_btn.centerx = screen.get_rect().centerx + 250
-        hard_btn.centery = screen.get_rect().centery
-
-        # Blit text
-        screen.blit(pong, pong_btn)
-        screen.blit(sub, sub_btn)
-        screen.blit(dl, dl_btn)
-        screen.blit(easy, easy_btn)
-        screen.blit(med, med_btn)
-        screen.blit(hard, hard_btn)
-        pygame.display.flip()
-
-        # Run only once
-        ball.start_click = False
-        print("hello")
-
-
-def update_screen(screen, line, right, right_top, right_bot, left, left_top, left_bot, ball):
+def update_screen(screen, line, right, right_top, right_bot, left, left_top, left_bot, ball, start):
     """Update images on the screen and flip to new screen."""
     # Connect right top and bottom paddles together
     right_bot.rect.centerx = right_top.rect.centerx
@@ -83,12 +22,12 @@ def update_screen(screen, line, right, right_top, right_bot, left, left_top, lef
     right_top.blitme()
     right_bot.blitme()
     ball.blitme()
-    score(screen, ball)
+    score(screen, ball, start)
     # Make most recently drawn screen visible
     pygame.display.flip()
 
 
-def check_events(right, right_top, left, left_top, ball):
+def check_events(right, right_top, ball, screen):
     """Respond to key presses and mouse events."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -106,12 +45,17 @@ def check_events(right, right_top, left, left_top, ball):
             elif event.key == pygame.K_RIGHT:
                 right_top.move_player_right = True
             elif event.key == pygame.K_SPACE:
-                if ball.game_active == False:
-                    ball.start_active = True
+                if not ball.game_active:
+                    ball.start_active = False
                     ball.game_active = True
                     ball.left_score = 0
                     ball.right_score = 0
-
+            elif event.key == pygame.K_r:
+                if not ball.game_active:
+                    screen.fill((0, 0, 0))
+                    ball.start_active = True
+                    ball.left_score = 0
+                    ball.right_score = 0
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
                 right.move_right_up = False
@@ -138,11 +82,12 @@ def check_ball(ball):
             ball.rect.centerx = ball.screen_rect.centerx
             ball.rect.centery = ball.screen_rect.centery
 
-            # Reset the ball speed and give a score
-            ball.dx = ball.speed
-            ball.dy = ball.speed
+            # Ball hits randomly
+            ball.dx = randint(5, 8)
+            ball.dy = randint(5, 8)
 
             ball.dx *= -1
+            ball.dy *= random.choice([-1, 1])
             ball.left_score += 1
 
         elif ball.rect.left < ball.screen_rect.right / 2:
@@ -153,11 +98,11 @@ def check_ball(ball):
             ball.rect.centerx = ball.screen_rect.centerx
             ball.rect.centery = ball.screen_rect.centery
 
-            # Reset the ball speed and give a score
-            ball.dx = ball.speed
-            ball.dy = ball.speed
+            # Ball hits randomly
+            ball.dx = randint(5, 8)
+            ball.dy = randint(5, 8)
 
-            ball.dy *= -1
+            ball.dy *= random.choice([-1, 1])
             ball.right_score += 1
 
     # IF HIT BOTTOM
@@ -170,11 +115,11 @@ def check_ball(ball):
             ball.rect.centerx = ball.screen_rect.centerx
             ball.rect.centery = ball.screen_rect.centery
 
-            # Reset the ball speed and give a score
-            ball.dx = ball.speed
-            ball.dy = ball.speed
+            # Ball hits randomly
+            ball.dx = randint(5, 8)
+            ball.dy = randint(5, 8)
 
-            ball.dy *= -1
+            ball.dy *= random.choice([-1, 1])
             ball.right_score += 1
 
         elif ball.rect.left > ball.screen_rect.right / 2:
@@ -186,11 +131,12 @@ def check_ball(ball):
             ball.rect.centerx = ball.screen_rect.centerx
             ball.rect.centery = ball.screen_rect.centery
 
-            # Reset the ball speed and give a score
-            ball.dx = ball.speed
-            ball.dy = ball.speed
+            # Ball hits randomly
+            ball.dx = randint(5, 8)
+            ball.dy = randint(5, 8)
 
             ball.dx *= -1
+            ball.dy *= random.choice([-1, 1])
             ball.left_score += 1
 
     # If hit right side of screen, go back to middle
@@ -202,13 +148,13 @@ def check_ball(ball):
         ball.rect.centerx = ball.screen_rect.centerx
         ball.rect.centery = ball.screen_rect.centery
 
-        # Reset the ball speed
-        ball.dx = ball.speed
-        ball.dy = ball.speed
+        # Ball hits randomly
+        ball.dx = randint(5, 8)
+        ball.dy = randint(5, 8)
 
         ball.dx *= -1
+        ball.dy *= random.choice([-1, 1])
         ball.left_score += 1
-        print("Hit right side")
 
     # If hit left of screen, go back to middle
     if ball.rect.right <= ball.screen_rect.left:
@@ -219,13 +165,12 @@ def check_ball(ball):
         ball.rect.centerx = ball.screen_rect.centerx
         ball.rect.centery = ball.screen_rect.centery
 
-        # Reset the ball speed and give a score
-        ball.dx = ball.speed
-        ball.dy = ball.speed
+        # Ball hits randomly
+        ball.dx = randint(5, 8)
+        ball.dy = randint(5, 8)
 
-        ball.dx *= -1
+        ball.dy *= random.choice([-1, 1])
         ball.right_score += 1
-        print("Hit LEFT")
 
 
 def check_collisions(ball, right, right_top, right_bot, left, left_top, left_bot):
@@ -302,23 +247,38 @@ def check_collisions(ball, right, right_top, right_bot, left, left_top, left_bot
         ball.dx *= 1.01
         ball.dy *= 1.01
 
-def score(screen, ball):
+
+def score(screen, ball, start):
     font = pygame.font.SysFont("monospace", 100)
     bigfont = pygame.font.SysFont("monospace", 150)
     smallfont = pygame.font.SysFont("monospace", 40)
     color = (255, 255, 255)
 
     left = font.render(str(ball.left_score), True, color)
+    left_btn = left.get_rect()
+    left_btn.centerx = screen.get_rect().centerx - 80
+    left_btn.centery = 50
+
     right = font.render(str(ball.right_score), True, color)
+    right_btn = right.get_rect()
+    right_btn.centerx = screen.get_rect().centerx + 80
+    right_btn.centery = 50
 
     win = bigfont.render("WIN", True, color)
     play = smallfont.render("PLAY AGAIN?", True, color)
     space = smallfont.render("(SPACEBAR)", True, color)
+    reset = smallfont.render("Press 'r' to reset to main menu", True, color)
 
-    screen.blit(left, [300, 10])
-    screen.blit(right, [450, 10])
+    scores = font.render(str(start.score), True, color)
+    scores_btn = scores.get_rect()
+    scores_btn.centerx = screen.get_rect().centerx
+    scores_btn.centery = 120
 
-    if ball.left_score == 10:
+    screen.blit(left, left_btn)
+    screen.blit(right, right_btn)
+    screen.blit(scores, scores_btn)
+
+    if ball.left_score == start.score:
         # Sounds
         pygame.mixer.music.load('sounds/win.wav')
         pygame.mixer.music.play(0)
@@ -327,8 +287,9 @@ def score(screen, ball):
         screen.blit(win, [130, 200])
         screen.blit(play, [140, 320])
         screen.blit(space, [150, 350])
+        screen.blit(reset, [200, 500])
 
-    if ball.right_score == 10:
+    if ball.right_score == start.score:
         # Sounds
         pygame.mixer.music.load('sounds/win.wav')
         pygame.mixer.music.play(0)
@@ -337,3 +298,4 @@ def score(screen, ball):
         screen.blit(win, [450, 200])
         screen.blit(play, [465, 320])
         screen.blit(space, [475, 350])
+        screen.blit(reset, [200, 500])

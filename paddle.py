@@ -1,8 +1,7 @@
 import pygame
 
 
-class VerticalPaddle():
-
+class VerticalPaddle:
     def __init__(self, screen):
         self.screen = screen
 
@@ -20,7 +19,7 @@ class VerticalPaddle():
         self.move_left_down = True
 
         # Speed for paddle
-        self.speed = 12
+        self.speed = 8
 
     def update(self):
         """Update the paddles's position based on the movement flag."""
@@ -33,7 +32,7 @@ class VerticalPaddle():
         self.screen.blit(self.image, self.rect)
 
 
-class HorizontalPaddle():
+class HorizontalPaddle:
     def __init__(self, screen):
         self.screen = screen
 
@@ -47,7 +46,7 @@ class HorizontalPaddle():
         self.move_player_left = False
 
         # Setting speed for the paddle movement
-        self.speed = 12
+        self.speed = 8
 
     def update(self):
         """Update the paddles's position based on the movement flag."""
@@ -61,7 +60,7 @@ class HorizontalPaddle():
         self.screen.blit(self.image, self.rect)
 
 
-class CPUVerticalPaddle():
+class CPUVerticalPaddle:
     def __init__(self, screen):
         self.screen = screen
 
@@ -70,20 +69,17 @@ class CPUVerticalPaddle():
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
-        # Speed for paddle
-        self.speed = 6
-
-    def update(self, ball):
-        if self.rect.centery < ball.rect.centery and self.rect.bottom < self.screen_rect.bottom:
-            self.rect.centery += self.speed
-        elif self.rect.centery > ball.rect.centery and self.rect.top > self.screen_rect.top:
-            self.rect.centery -= self.speed
+    def update(self, ball, start):
+        if self.rect.centery + 10 < ball.rect.centery and self.rect.bottom < self.screen_rect.bottom:
+            self.rect.centery += start.speed
+        elif self.rect.centery - 10 > ball.rect.centery and self.rect.top > self.screen_rect.top:
+            self.rect.centery -= start.speed
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
 
 
-class CPUHorizontalPaddle():
+class CPUHorizontalPaddle:
     def __init__(self, screen):
         self.screen = screen
 
@@ -92,14 +88,11 @@ class CPUHorizontalPaddle():
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
-        # Setting speed for the paddle movement
-        self.speed = 6
-
-    def update(self, ball):
+    def update(self, ball, start):
         if self.rect.centerx < ball.rect.centerx and self.rect.right < self.screen_rect.right / 2:
-            self.rect.centerx += self.speed
+            self.rect.centerx += start.speed
         if self.rect.centerx > ball.rect.centerx and self.rect.left > self.screen_rect.left:
-            self.rect.centerx -= self.speed
+            self.rect.centerx -= start.speed
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)

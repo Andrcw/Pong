@@ -3,8 +3,7 @@ import pygame
 import pygame.sysfont
 
 
-class Start():
-
+class Start:
     def __init__(self, screen):
         screen.fill((0, 0, 0))
         self.title = pygame.font.SysFont("monospace", 150)
@@ -38,6 +37,7 @@ class Start():
         self.easy_btn = self.easy.get_rect()
         self.easy_btn.centerx = screen.get_rect().centerx - 10
         self.easy_btn.centery = screen.get_rect().centery
+        self.speed = 5  # Starts off on easy
 
         # Difficulty medium
         self.med = self.medium.render("Medium", True, self.white)
@@ -51,6 +51,37 @@ class Start():
         self.hard_btn.centerx = screen.get_rect().centerx + 250
         self.hard_btn.centery = screen.get_rect().centery
 
+        # Play up to:
+        self.play = self.medium.render("Play to:", True, self.white)
+        self.play_btn = self.play.get_rect()
+        self.play_btn.centerx = screen.get_rect().centerx - 120
+        self.play_btn.centery = screen.get_rect().centery + 80
+
+        # 5
+        self.five = self.medium.render("5", True, self.red)
+        self.five_btn = self.five.get_rect()
+        self.five_btn.centerx = screen.get_rect().centerx - 20
+        self.five_btn.centery = screen.get_rect().centery + 80
+        self.score = 5  # starts off at 5 points
+
+        # 10
+        self.ten = self.medium.render("10", True, self.white)
+        self.ten_btn = self.ten.get_rect()
+        self.ten_btn.centerx = screen.get_rect().centerx + 40
+        self.ten_btn.centery = screen.get_rect().centery + 80
+
+        # 15
+        self.fif = self.medium.render("15", True, self.white)
+        self.fif_btn = self.fif.get_rect()
+        self.fif_btn.centerx = screen.get_rect().centerx + 100
+        self.fif_btn.centery = screen.get_rect().centery + 80
+
+        # Start button
+        self.start = self.medium.render("Start", True, self.white)
+        self.start_btn = self.hard.get_rect()
+        self.start_btn.centerx = screen.get_rect().centerx
+        self.start_btn.centery = screen.get_rect().centery + 200
+
     def start_blit(self, screen):
         # Blit text
         screen.blit(self.pong, self.pong_btn)
@@ -59,9 +90,14 @@ class Start():
         screen.blit(self.easy, self.easy_btn)
         screen.blit(self.med, self.med_btn)
         screen.blit(self.hard, self.hard_btn)
+        screen.blit(self.start, self.start_btn)
+        screen.blit(self.play, self.play_btn)
+        screen.blit(self.five, self.five_btn)
+        screen.blit(self.ten, self.ten_btn)
+        screen.blit(self.fif, self.fif_btn)
         pygame.display.flip()
 
-    def start_update(self, left, left_top):
+    def start_update(self, ball):
         # if mouse collides with easy
         if self.easy_btn.collidepoint(pygame.mouse.get_pos()):
             for event in pygame.event.get():
@@ -69,9 +105,7 @@ class Start():
                     self.easy = self.medium.render("Easy", True, self.red)
                     self.med = self.medium.render("Medium", True, self.white)
                     self.hard = self.medium.render("Hard", True, self.white)
-                    left.speed = 5
-                    left_top.speed = 5
-                    print(left.speed)
+                    self.speed = 5
 
         # if mouse click medium
         if self.med_btn.collidepoint(pygame.mouse.get_pos()):
@@ -80,7 +114,7 @@ class Start():
                     self.easy = self.medium.render("Easy", True, self.white)
                     self.med = self.medium.render("Medium", True, self.red)
                     self.hard = self.medium.render("Hard", True, self.white)
-                    print(left.speed)
+                    self.speed = 10
 
         # if mouse click hard
         if self.hard_btn.collidepoint(pygame.mouse.get_pos()):
@@ -89,6 +123,38 @@ class Start():
                     self.easy = self.medium.render("Easy", True, self.white)
                     self.med = self.medium.render("Medium", True, self.white)
                     self.hard = self.medium.render("Hard", True, self.red)
-                    left.speed = 10
-                    left_top.speed = 10
-                    print(left.speed)
+                    self.speed = 20
+
+        # if mouse click 5
+        if self.five_btn.collidepoint(pygame.mouse.get_pos()):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.five = self.medium.render("5", True, self.red)
+                    self.ten = self.medium.render("10", True, self.white)
+                    self.fif = self.medium.render("15", True, self.white)
+                    self.score = 5
+
+        # if mouse click 10
+        if self.ten_btn.collidepoint(pygame.mouse.get_pos()):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.five = self.medium.render("5", True, self.white)
+                    self.ten = self.medium.render("10", True, self.red)
+                    self.fif = self.medium.render("15", True, self.white)
+                    self.score = 10
+
+        # if mouse click 15
+        if self.fif_btn.collidepoint(pygame.mouse.get_pos()):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.five = self.medium.render("5", True, self.white)
+                    self.ten = self.medium.render("10", True, self.white)
+                    self.fif = self.medium.render("15", True, self.red)
+                    self.score = 15
+
+        # if mouse click start
+        if self.start_btn.collidepoint(pygame.mouse.get_pos()):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    ball.start_active = False
+                    ball.game_active = True
